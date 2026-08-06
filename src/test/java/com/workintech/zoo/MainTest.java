@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResultAnalyzer.class)
+@ExtendWith(com.workintech.s17d2.ResultAnalyzer.class)
 class MainTest {
 
 
@@ -89,7 +89,7 @@ class MainTest {
     @DisplayName("Test Koala AllArgsConstructor")
     void testKoalaAllArgsConstructor() {
         // Creating an instance using all-args constructor
-        Koala koala = new Koala(1, "Kara", 20.0, 15.0, "Female");
+        Koala koala = new Koala(1, "Kara", 15.0, 20.0, "Female");
 
         // Assertions to ensure fields are set correctly
         assertEquals(1, koala.getId());
@@ -140,7 +140,7 @@ class MainTest {
         long now = System.currentTimeMillis();
 
 
-        ZooErrorResponse errorResponse = new ZooErrorResponse(404, "Not Found", now);
+        ZooErrorResponse errorResponse = new ZooErrorResponse("Not Found", 404, now);
 
 
         assertEquals(404, errorResponse.getStatus());
@@ -251,11 +251,9 @@ class MainTest {
     @DisplayName("KangarooController:DeleteKangaroo")
     @Order(5)
     void testDeleteKangaroo() throws Exception {
-
         mockMvc.perform(post("/kangaroos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(kangaroo)));
-
 
         mockMvc.perform(delete("/kangaroos/{id}", kangaroo.getId()))
                 .andExpect(status().isOk())
